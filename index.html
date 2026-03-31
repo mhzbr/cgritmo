@@ -8,911 +8,13 @@
     name="description"
     content="Aulas de ginástica rítmica em Maringá. Desenvolvimento, disciplina, coordenação, postura e confiança para crianças e jovens."
   />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet"
   />
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --primary: #b84cff;
-      --primary-dark: #8f2ce6;
-      --primary-soft: #f8ebff;
-      --secondary: #fff5fc;
-      --text: #222;
-      --text-light: #666;
-      --white: #fff;
-      --border: #efd9ff;
-      --shadow: 0 14px 32px rgba(143, 44, 230, 0.10);
-      --radius-xl: 28px;
-      --radius-lg: 22px;
-      --radius-md: 18px;
-      --container: 1180px;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "Inter", sans-serif;
-      background: linear-gradient(180deg, #fffafc 0%, #ffffff 100%);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    ul {
-      list-style: none;
-    }
-
-    .container {
-      width: 100%;
-      max-width: var(--container);
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    .section {
-      padding: 88px 0;
-    }
-
-    .section-header {
-      max-width: 760px;
-      margin: 0 auto 42px;
-      text-align: center;
-    }
-
-    .section-header span {
-      display: inline-block;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary-dark);
-      border: 1px solid var(--border);
-      font-size: 0.9rem;
-      font-weight: 700;
-      margin-bottom: 14px;
-    }
-
-    .section-header h2 {
-      font-size: clamp(1.9rem, 3vw, 3rem);
-      line-height: 1.08;
-      margin-bottom: 12px;
-      letter-spacing: -0.03em;
-    }
-
-    .section-header p {
-      color: var(--text-light);
-      font-size: 1.02rem;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 14px 24px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: var(--white);
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      transition: 0.25s ease;
-      box-shadow: 0 14px 28px rgba(143, 44, 230, 0.18);
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--primary-dark);
-      border: 2px solid var(--primary);
-      box-shadow: none;
-    }
-
-    .btn-outline:hover {
-      background: var(--primary);
-      color: var(--white);
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(184, 76, 255, 0.08);
-    }
-
-    .header-wrap {
-      min-height: 78px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .logo {
-      font-size: 1.55rem;
-      font-weight: 800;
-      color: var(--primary-dark);
-      letter-spacing: -0.03em;
-      white-space: nowrap;
-    }
-
-    .desktop-nav {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-
-    .desktop-nav a {
-      font-size: 0.96rem;
-      font-weight: 500;
-      color: var(--text);
-      transition: 0.2s ease;
-    }
-
-    .desktop-nav a:hover {
-      color: var(--primary-dark);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .menu-toggle {
-      display: none;
-      width: 48px;
-      height: 48px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--white);
-      cursor: pointer;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .menu-toggle span {
-      width: 20px;
-      height: 2px;
-      background: var(--primary-dark);
-      border-radius: 10px;
-    }
-
-    .mobile-menu {
-      display: none;
-      border-top: 1px solid rgba(184, 76, 255, 0.08);
-      background: #fff;
-    }
-
-    .mobile-menu.open {
-      display: block;
-    }
-
-    .mobile-menu nav {
-      display: flex;
-      flex-direction: column;
-      padding: 14px 20px 20px;
-      gap: 12px;
-    }
-
-    .mobile-menu a {
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: #faf5ff;
-      font-weight: 600;
-      color: var(--primary-dark);
-    }
-
-    .hero {
-      min-height: 92vh;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      background:
-        linear-gradient(rgba(26, 10, 33, 0.42), rgba(26, 10, 33, 0.58)),
-        url('img/banner-cg-ritmo.jpg') center/cover no-repeat;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(184, 76, 255, 0.12), transparent);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 760px;
-      color: #fff;
-      padding: 90px 0;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      margin-bottom: 20px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.20);
-      backdrop-filter: blur(8px);
-      font-size: 0.92rem;
-      font-weight: 700;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.3rem, 5vw, 4.6rem);
-      line-height: 1.02;
-      letter-spacing: -0.045em;
-      margin-bottom: 18px;
-      font-weight: 800;
-    }
-
-    .hero p {
-      font-size: 1.08rem;
-      color: rgba(255, 255, 255, 0.92);
-      max-width: 650px;
-      margin-bottom: 30px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-
-    .hero-actions .btn-outline {
-      color: #fff;
-      border-color: rgba(255,255,255,0.65);
-    }
-
-    .hero-actions .btn-outline:hover {
-      background: #fff;
-      color: var(--primary-dark);
-    }
-
-    .hero-points {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .hero-points li {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 0.92rem;
-      font-weight: 600;
-      backdrop-filter: blur(8px);
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      align-items: center;
-      gap: 28px;
-    }
-
-    .about-text h2 {
-      font-size: clamp(1.9rem, 3vw, 3rem);
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      margin-bottom: 18px;
-    }
-
-    .about-text p {
-      color: var(--text-light);
-      margin-bottom: 14px;
-      font-size: 1rem;
-    }
-
-    .about-list {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-top: 26px;
-    }
-
-    .about-item {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      box-shadow: var(--shadow);
-    }
-
-    .about-item strong {
-      display: block;
-      color: var(--primary-dark);
-      margin-bottom: 8px;
-      font-size: 1rem;
-    }
-
-    .about-item p {
-      margin: 0;
-      font-size: 0.95rem;
-    }
-
-    .about-image img {
-      width: 100%;
-      height: 560px;
-      object-fit: cover;
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
-    }
-
-    .modalidades-grid,
-    .benefits-grid,
-    .steps-grid,
-    .testimonials-grid,
-    .faq-grid,
-    .contact-grid,
-    .stats-grid {
-      display: grid;
-      gap: 24px;
-    }
-
-    .modalidades-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-
-    .card img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-    }
-
-    .card-body {
-      padding: 22px;
-    }
-
-    .card-body h3 {
-      font-size: 1.15rem;
-      margin-bottom: 10px;
-      color: var(--primary-dark);
-    }
-
-    .card-body p {
-      color: var(--text-light);
-      font-size: 0.97rem;
-    }
-
-    .stats-wrap {
-      background: linear-gradient(135deg, #fff7fd, #faf0ff);
-      border: 1px solid var(--border);
-      border-radius: 30px;
-      padding: 34px;
-      box-shadow: var(--shadow);
-    }
-
-    .stats-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .stat {
-      text-align: center;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 2rem;
-      color: var(--primary-dark);
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .stat span {
-      color: var(--text-light);
-      font-weight: 500;
-      font-size: 0.96rem;
-    }
-
-    .benefits-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .benefit-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-
-    .benefit-icon {
-      width: 58px;
-      height: 58px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, #f7e7ff, #fff0f9);
-      color: var(--primary-dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      margin: 0 auto 14px;
-      font-size: 1.2rem;
-    }
-
-    .benefit-card h3 {
-      margin-bottom: 10px;
-      font-size: 1.08rem;
-      color: var(--primary-dark);
-    }
-
-    .benefit-card p {
-      color: var(--text-light);
-      font-size: 0.96rem;
-    }
-
-    .gallery-section {
-      background: linear-gradient(180deg, #fff6fb 0%, #ffffff 100%);
-    }
-
-    .slider-wrapper {
-      max-width: 980px;
-      margin: 0 auto;
-    }
-
-    .slider {
-      overflow: hidden;
-      border-radius: 30px;
-      box-shadow: var(--shadow);
-      background: #fff;
-    }
-
-    .slides {
-      display: flex;
-      transition: transform 0.5s ease;
-    }
-
-    .slide {
-      min-width: 100%;
-      position: relative;
-    }
-
-    .slide img {
-      width: 100%;
-      height: 580px;
-      object-fit: cover;
-    }
-
-    .slide-caption {
-      position: absolute;
-      left: 24px;
-      bottom: 24px;
-      background: rgba(24, 10, 31, 0.60);
-      color: #fff;
-      padding: 16px 18px;
-      border-radius: 18px;
-      max-width: 430px;
-      backdrop-filter: blur(8px);
-    }
-
-    .slide-caption h3 {
-      font-size: 1.08rem;
-      margin-bottom: 6px;
-    }
-
-    .slide-caption p {
-      font-size: 0.93rem;
-      color: rgba(255,255,255,0.90);
-    }
-
-    .slider-controls {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .slider-btn {
-      width: 48px;
-      height: 48px;
-      border: none;
-      border-radius: 50%;
-      background: #fff;
-      color: var(--primary-dark);
-      box-shadow: var(--shadow);
-      font-size: 1.2rem;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .slider-dots {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #e3c8ff;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .dot.active {
-      background: var(--primary-dark);
-      transform: scale(1.08);
-    }
-
-    .steps-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .step-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 26px;
-      box-shadow: var(--shadow);
-    }
-
-    .step-number {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      margin-bottom: 14px;
-    }
-
-    .step-card h3 {
-      margin-bottom: 10px;
-      color: var(--primary-dark);
-      font-size: 1.08rem;
-    }
-
-    .step-card p {
-      color: var(--text-light);
-      font-size: 0.96rem;
-    }
-
-    .testimonials-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .testimonial {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 26px;
-      box-shadow: var(--shadow);
-    }
-
-    .testimonial p {
-      color: var(--text-light);
-      font-size: 0.97rem;
-      margin-bottom: 18px;
-    }
-
-    .testimonial strong {
-      display: block;
-      color: var(--primary-dark);
-      font-size: 1rem;
-      margin-bottom: 4px;
-    }
-
-    .testimonial span {
-      color: #888;
-      font-size: 0.92rem;
-    }
-
-    .faq-grid {
-      max-width: 900px;
-      margin: 0 auto;
-      grid-template-columns: 1fr;
-    }
-
-    .faq-item {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-
-    .faq-question {
-      width: 100%;
-      background: #fff;
-      border: none;
-      text-align: left;
-      padding: 22px 24px;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text);
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .faq-question span:last-child {
-      color: var(--primary-dark);
-      font-size: 1.2rem;
-      font-weight: 800;
-    }
-
-    .faq-answer {
-      display: none;
-      padding: 0 24px 22px;
-      color: var(--text-light);
-      font-size: 0.97rem;
-    }
-
-    .faq-item.active .faq-answer {
-      display: block;
-    }
-
-    .final-cta {
-      margin: 0 20px 88px;
-      border-radius: 34px;
-      overflow: hidden;
-      background: linear-gradient(135deg, #8f2ce6, #d554ff);
-      color: #fff;
-      box-shadow: 0 20px 42px rgba(143, 44, 230, 0.18);
-    }
-
-    .final-cta-grid {
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      align-items: center;
-      gap: 0;
-    }
-
-    .final-cta-content {
-      padding: 58px 42px;
-    }
-
-    .final-cta-content h2 {
-      font-size: clamp(2rem, 3vw, 3.1rem);
-      line-height: 1.06;
-      margin-bottom: 16px;
-      letter-spacing: -0.03em;
-    }
-
-    .final-cta-content p {
-      color: rgba(255,255,255,0.92);
-      margin-bottom: 24px;
-      max-width: 560px;
-    }
-
-    .final-cta-content .btn {
-      background: #fff;
-      color: var(--primary-dark);
-      box-shadow: none;
-    }
-
-    .final-cta-image img {
-      width: 100%;
-      height: 100%;
-      min-height: 430px;
-      object-fit: cover;
-    }
-
-    .contact-grid {
-      grid-template-columns: 0.95fr 1.05fr;
-      align-items: stretch;
-    }
-
-    .contact-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 28px;
-      padding: 30px;
-      box-shadow: var(--shadow);
-    }
-
-    .contact-card h3 {
-      font-size: 1.4rem;
-      margin-bottom: 16px;
-      color: var(--primary-dark);
-    }
-
-    .contact-list {
-      display: grid;
-      gap: 14px;
-      margin-bottom: 22px;
-    }
-
-    .contact-list li {
-      padding: 14px 16px;
-      background: #faf6ff;
-      border-radius: 16px;
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    .map-wrap {
-      border-radius: 28px;
-      overflow: hidden;
-      min-height: 100%;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-    }
-
-    .map-wrap iframe {
-      width: 100%;
-      height: 100%;
-      min-height: 420px;
-      border: 0;
-    }
-
-    footer {
-      background: #1c1023;
-      color: rgba(255,255,255,0.82);
-      padding: 40px 0;
-    }
-
-    .footer-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    .footer-wrap p {
-      font-size: 0.95rem;
-    }
-
-    .whatsapp-float {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      width: 62px;
-      height: 62px;
-      border-radius: 50%;
-      background: #25d366;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 1.45rem;
-      box-shadow: 0 16px 30px rgba(37, 211, 102, 0.28);
-      z-index: 1200;
-    }
-
-    @media (max-width: 1100px) {
-      .about-grid,
-      .contact-grid,
-      .final-cta-grid,
-      .benefits-grid,
-      .modalidades-grid,
-      .steps-grid,
-      .testimonials-grid,
-      .stats-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 900px) {
-      .desktop-nav,
-      .header-actions .btn {
-        display: none;
-      }
-
-      .menu-toggle {
-        display: inline-flex;
-      }
-
-      .about-grid,
-      .contact-grid,
-      .final-cta-grid,
-      .benefits-grid,
-      .modalidades-grid,
-      .steps-grid,
-      .testimonials-grid,
-      .stats-grid,
-      .about-list {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        min-height: auto;
-      }
-
-      .hero-content {
-        padding: 90px 0 80px;
-      }
-
-      .about-image img,
-      .slide img,
-      .final-cta-image img {
-        height: auto;
-        min-height: unset;
-      }
-
-      .final-cta-content {
-        padding: 42px 22px;
-      }
-
-      .final-cta {
-        margin: 0 14px 74px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .section {
-        padding: 72px 0;
-      }
-
-      .hero-actions,
-      .hero-points {
-        gap: 10px;
-      }
-
-      .hero-points li {
-        width: 100%;
-      }
-
-      .slide-caption {
-        left: 14px;
-        right: 14px;
-        bottom: 14px;
-        max-width: unset;
-      }
-
-      .contact-card {
-        padding: 24px;
-      }
-
-      .footer-wrap {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -922,7 +24,6 @@
 
       <nav class="desktop-nav">
         <a href="#sobre">Sobre</a>
-        <a href="#modalidades">Modalidades</a>
         <a href="#beneficios">Benefícios</a>
         <a href="#galeria">Galeria</a>
         <a href="#faq">FAQ</a>
@@ -932,7 +33,7 @@
       <div class="header-actions">
         <a
           class="btn"
-          href="https://wa.me/5544999310133?text=Ol%C3%A1%2C%20quero%20conhecer%20as%20aulas%20da%20CG%20Ritmo."
+          href="https://wa.me/5544999310133?text=Olá,%20quero%20conhecer%20as%20aulas%20da%20CG%20Ritmo."
           target="_blank"
         >
           Agendar aula
@@ -949,13 +50,12 @@
     <div class="mobile-menu" id="mobileMenu">
       <nav>
         <a href="#sobre">Sobre</a>
-        <a href="#modalidades">Modalidades</a>
         <a href="#beneficios">Benefícios</a>
         <a href="#galeria">Galeria</a>
         <a href="#faq">FAQ</a>
         <a href="#contato">Contato</a>
         <a
-          href="https://wa.me/5544999310133?text=Ol%C3%A1%2C%20quero%20agendar%20uma%20aula%20experimental%20na%20CG%20Ritmo."
+          href="https://wa.me/5544999310133?text=Olá,%20quero%20agendar%20uma%20aula%20experimental%20na%20CG%20Ritmo."
           target="_blank"
         >
           Falar no WhatsApp
@@ -966,40 +66,46 @@
 
   <main>
     <section class="hero">
-      <div class="container">
-        <div class="hero-content">
-          <div class="hero-badge">Ginástica Rítmica em Maringá</div>
+      <img
+        class="hero-bg"
+        src="banner-cg-ritmo.png"
+        alt="Banner da CG Ritmo"
+      />
 
-          <h1>
-            Desenvolvimento, disciplina e confiança para sua filha através do esporte.
-          </h1>
+      <div class="hero-overlay"></div>
 
-          <p>
-            A CG Ritmo oferece aulas de ginástica rítmica para crianças e jovens,
-            promovendo coordenação, postura, expressão corporal, autoestima e amor pelo movimento.
-          </p>
+      <div class="container hero-content">
+        <div class="hero-badge">Ginástica Rítmica em Maringá</div>
 
-          <div class="hero-actions">
-            <a
-              class="btn"
-              href="https://wa.me/5544999310133?text=Ol%C3%A1%2C%20quero%20agendar%20uma%20aula%20experimental%20na%20CG%20Ritmo."
-              target="_blank"
-            >
-              Agendar aula experimental
-            </a>
+        <h1>
+          Desenvolvimento, disciplina e confiança para sua filha através do esporte.
+        </h1>
 
-            <a class="btn btn-outline" href="#galeria">
-              Ver fotos
-            </a>
-          </div>
+        <p>
+          A CG Ritmo oferece aulas de ginástica rítmica para crianças e jovens,
+          promovendo coordenação, postura, expressão corporal, autoestima e amor pelo movimento.
+        </p>
 
-          <ul class="hero-points">
-            <li>Coordenação motora</li>
-            <li>Disciplina e foco</li>
-            <li>Postura e expressão</li>
-            <li>Ambiente acolhedor</li>
-          </ul>
+        <div class="hero-actions">
+          <a
+            class="btn"
+            href="https://wa.me/5544999310133?text=Olá,%20quero%20agendar%20uma%20aula%20experimental%20na%20CG%20Ritmo."
+            target="_blank"
+          >
+            Agendar aula experimental
+          </a>
+
+          <a class="btn btn-outline" href="#galeria">
+            Ver fotos
+          </a>
         </div>
+
+        <ul class="hero-points">
+          <li>Coordenação motora</li>
+          <li>Disciplina e foco</li>
+          <li>Postura e expressão</li>
+          <li>Ambiente acolhedor</li>
+        </ul>
       </div>
     </section>
 
@@ -1050,83 +156,7 @@
           </div>
 
           <div class="about-image">
-            <img src="IMG_8047.heic" alt="Aluna treinando ginástica rítmica na CG Ritmo" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="modalidades">
-      <div class="container">
-        <div class="section-header">
-          <span>Modalidades e vivências</span>
-          <h2>Uma experiência pensada para aprender, evoluir e se encantar.</h2>
-          <p>
-            A prática da ginástica rítmica pode envolver diferentes fases, vivências e estímulos,
-            sempre com foco no desenvolvimento das alunas.
-          </p>
-        </div>
-
-        <div class="modalidades-grid">
-          <article class="card">
-            <img src="slide-01.png" alt="Iniciação na ginástica rítmica" />
-            <div class="card-body">
-              <h3>Iniciação esportiva</h3>
-              <p>
-                Primeiros contatos com o universo da ginástica rítmica, desenvolvendo base motora,
-                ritmo, flexibilidade, postura e coordenação.
-              </p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img src="slide-02.png" alt="Treinamento técnico de ginástica rítmica" />
-            <div class="card-body">
-              <h3>Treinamento técnico</h3>
-              <p>
-                Aprendizado progressivo com elementos corporais, aparelhos e movimentos que
-                fortalecem a evolução esportiva das alunas.
-              </p>
-            </div>
-          </article>
-
-          <article class="card">
-            <img src="slide-03.png" alt="Apresentações de ginástica rítmica" />
-            <div class="card-body">
-              <h3>Apresentações e vivências</h3>
-              <p>
-                Um espaço para expressão, sensibilidade e construção de confiança por meio
-                de coreografias, apresentações e experiências marcantes.
-              </p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="stats-wrap">
-          <div class="stats-grid">
-            <div class="stat">
-              <strong>+30</strong>
-              <span>Anos de história no esporte</span>
-            </div>
-
-            <div class="stat">
-              <strong>100%</strong>
-              <span>Foco no desenvolvimento das alunas</span>
-            </div>
-
-            <div class="stat">
-              <strong>Maringá</strong>
-              <span>Atendimento local e próximo</span>
-            </div>
-
-            <div class="stat">
-              <strong>WhatsApp</strong>
-              <span>(44) 99931-0133</span>
-            </div>
+            <img src="sobre-cg-ritmo.png" alt="Aluna treinando na CG Ritmo" />
           </div>
         </div>
       </div>
@@ -1170,7 +200,7 @@
       </div>
     </section>
 
-    <section class="section gallery-section" id="galeria">
+    <section class="section" id="galeria">
       <div class="container">
         <div class="section-header">
           <span>Galeria</span>
@@ -1184,7 +214,7 @@
           <div class="slider">
             <div class="slides" id="slides">
               <div class="slide">
-                <img src="slide-01.png" alt="Treino de ginástica rítmica na CG Ritmo" />
+                <img src="slide-01.png" alt="Treino de ginástica rítmica" />
                 <div class="slide-caption">
                   <h3>Treinos com dedicação e evolução</h3>
                   <p>Um ambiente que inspira aprendizado, constância e desenvolvimento.</p>
@@ -1200,7 +230,7 @@
               </div>
 
               <div class="slide">
-                <img src="slide-03.png" alt="Alunas praticando ginástica rítmica" />
+                <img src="slide-03.png" alt="Alunas em atividade" />
                 <div class="slide-caption">
                   <h3>Conquistas que marcam a trajetória</h3>
                   <p>Cada aula é uma oportunidade de crescer dentro e fora do esporte.</p>
@@ -1219,84 +249,27 @@
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="section-header">
-          <span>Como funciona</span>
-          <h2>Começar pode ser mais simples do que parece</h2>
+    <section class="section aluna-section">
+      <div class="container aluna-grid">
+        <div class="aluna-image">
+          <img src="aluna.png" alt="Aluna da CG Ritmo" />
+        </div>
+
+        <div class="aluna-text">
+          <span class="mini-badge">Desenvolvimento com propósito</span>
+          <h2>Mais do que um esporte, uma experiência de crescimento.</h2>
           <p>
-            A ideia é tornar o primeiro contato com a modalidade leve, seguro e acolhedor.
+            A ginástica rítmica ajuda no desenvolvimento da disciplina, postura,
+            coordenação e confiança. Cada aula é uma oportunidade de construir novas habilidades
+            e fortalecer a autoestima.
           </p>
-        </div>
-
-        <div class="steps-grid">
-          <div class="step-card">
-            <div class="step-number">1</div>
-            <h3>Entre em contato</h3>
-            <p>
-              Fale com a equipe para tirar dúvidas, conhecer melhor a escola e entender
-              a proposta das aulas.
-            </p>
-          </div>
-
-          <div class="step-card">
-            <div class="step-number">2</div>
-            <h3>Conheça a rotina</h3>
-            <p>
-              Veja como funciona o ambiente, a metodologia e os benefícios da ginástica
-              rítmica para sua filha.
-            </p>
-          </div>
-
-          <div class="step-card">
-            <div class="step-number">3</div>
-            <h3>Agende uma aula experimental</h3>
-            <p>
-              Um primeiro passo importante para apresentar a modalidade e iniciar essa
-              experiência com segurança.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-header">
-          <span>Depoimentos</span>
-          <h2>Uma experiência que vai além da aula</h2>
-          <p>
-            Você pode substituir estes depoimentos pelos reais da CG Ritmo depois.
-          </p>
-        </div>
-
-        <div class="testimonials-grid">
-          <div class="testimonial">
-            <p>
-              “Minha filha evoluiu muito em postura, disciplina e confiança. A experiência
-              na CG Ritmo tem sido muito especial para nossa família.”
-            </p>
-            <strong>Nome da responsável</strong>
-            <span>Mãe de aluna</span>
-          </div>
-
-          <div class="testimonial">
-            <p>
-              “É lindo ver o cuidado com cada detalhe e como elas se sentem motivadas a
-              crescer a cada aula. O ambiente é acolhedor e muito inspirador.”
-            </p>
-            <strong>Nome da responsável</strong>
-            <span>Mãe de aluna</span>
-          </div>
-
-          <div class="testimonial">
-            <p>
-              “A ginástica rítmica ajudou muito no desenvolvimento da minha filha. Hoje ela
-              está mais concentrada, confiante e apaixonada pelo esporte.”
-            </p>
-            <strong>Nome da responsável</strong>
-            <span>Mãe de aluna</span>
-          </div>
+          <a
+            class="btn"
+            href="https://wa.me/5544999310133?text=Olá,%20quero%20mais%20informações%20sobre%20as%20aulas%20da%20CG%20Ritmo."
+            target="_blank"
+          >
+            Quero saber mais
+          </a>
         </div>
       </div>
     </section>
@@ -1307,7 +280,7 @@
           <span>Perguntas frequentes</span>
           <h2>Dúvidas comuns antes de começar</h2>
           <p>
-            Você pode ajustar os textos conforme as informações específicas da escola.
+            Ajuste os textos depois, se quiser, conforme as informações exatas da escola.
           </p>
         </div>
 
@@ -1318,8 +291,7 @@
               <span>+</span>
             </button>
             <div class="faq-answer">
-              A resposta pode variar conforme a turma e a proposta da escola. Aqui vale ajustar
-              com a idade real atendida pela CG Ritmo.
+              A faixa etária pode variar conforme a turma e a proposta pedagógica da escola.
             </div>
           </div>
 
@@ -1329,30 +301,17 @@
               <span>+</span>
             </button>
             <div class="faq-answer">
-              Não. Muitas crianças começam sem experiência prévia e vão desenvolvendo as habilidades
-              com acompanhamento progressivo.
+              Não. Muitas crianças começam sem experiência e vão evoluindo de forma progressiva.
             </div>
           </div>
 
           <div class="faq-item">
             <button class="faq-question">
-              <span>É possível fazer uma aula experimental?</span>
+              <span>É possível fazer aula experimental?</span>
               <span>+</span>
             </button>
             <div class="faq-answer">
-              Sim. A aula experimental é uma excelente forma de conhecer o ambiente e entender se a
-              modalidade faz sentido para a criança.
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button class="faq-question">
-              <span>Quais benefícios a modalidade oferece?</span>
-              <span>+</span>
-            </button>
-            <div class="faq-answer">
-              A ginástica rítmica contribui para coordenação motora, postura, disciplina, foco,
-              expressão corporal e autoconfiança.
+              Sim. A aula experimental é uma excelente forma de conhecer o ambiente e a modalidade.
             </div>
           </div>
         </div>
@@ -1360,27 +319,25 @@
     </section>
 
     <section class="final-cta">
-      <div class="container">
-        <div class="final-cta-grid">
-          <div class="final-cta-content">
-            <h2>Agende uma aula experimental e conheça a CG Ritmo de perto</h2>
-            <p>
-              Se você busca uma atividade que una desenvolvimento, sensibilidade, disciplina,
-              coordenação e confiança, a ginástica rítmica pode ser a escolha ideal para sua filha.
-            </p>
+      <div class="container final-cta-grid">
+        <div class="final-cta-content">
+          <h2>Agende uma aula experimental e conheça a CG Ritmo de perto</h2>
+          <p>
+            Se você busca uma atividade que una desenvolvimento, sensibilidade,
+            disciplina, coordenação e confiança, a ginástica rítmica pode ser a escolha ideal.
+          </p>
 
-            <a
-              class="btn"
-              href="https://wa.me/5544999310133?text=Ol%C3%A1%2C%20quero%20mais%20informa%C3%A7%C3%B5es%20sobre%20as%20aulas%20da%20CG%20Ritmo."
-              target="_blank"
-            >
-              Chamar no WhatsApp
-            </a>
-          </div>
+          <a
+            class="btn btn-light"
+            href="https://wa.me/5544999310133?text=Olá,%20quero%20agendar%20uma%20aula%20experimental%20na%20CG%20Ritmo."
+            target="_blank"
+          >
+            Chamar no WhatsApp
+          </a>
+        </div>
 
-          <div class="final-cta-image">
-            <img src="cta-cg-ritmo.png" alt="Aluna em apresentação de ginástica rítmica" />
-          </div>
+        <div class="final-cta-image">
+          <img src="cta-cg-ritmo.png" alt="Aluna em apresentação" />
         </div>
       </div>
     </section>
@@ -1390,9 +347,7 @@
         <div class="section-header">
           <span>Contato</span>
           <h2>Fale com a CG Ritmo</h2>
-          <p>
-            Tire suas dúvidas, conheça a escola e agende uma aula experimental.
-          </p>
+          <p>Tire suas dúvidas, conheça a escola e agende uma aula experimental.</p>
         </div>
 
         <div class="contact-grid">
@@ -1402,14 +357,12 @@
             <ul class="contact-list">
               <li><strong>WhatsApp:</strong> (44) 99931-0133</li>
               <li><strong>Endereço:</strong> Av. Jinroku Kubota, 3.607 - Maringá, PR, 87047-710</li>
-              <li><strong>Cidade:</strong> Maringá - PR</li>
-              <li><strong>CEP:</strong> 87047-710</li>
               <li><strong>Instagram:</strong> @cgritmo</li>
             </ul>
 
             <a
               class="btn"
-              href="https://wa.me/5544999310133?text=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20quero%20mais%20informa%C3%A7%C3%B5es%20sobre%20a%20CG%20Ritmo."
+              href="https://wa.me/5544999310133?text=Olá,%20vim%20pelo%20site%20e%20quero%20mais%20informações%20sobre%20a%20CG%20Ritmo."
               target="_blank"
             >
               Falar agora
@@ -1438,7 +391,7 @@
 
   <a
     class="whatsapp-float"
-    href="https://wa.me/5544999310133?text=Ol%C3%A1%2C%20quero%20conhecer%20a%20CG%20Ritmo."
+    href="https://wa.me/5544999310133?text=Olá,%20quero%20conhecer%20a%20CG%20Ritmo."
     target="_blank"
     aria-label="WhatsApp"
   >
@@ -1505,10 +458,8 @@
 
     if (slideItems.length > 0) {
       createDots();
-
       nextBtn.addEventListener("click", nextSlide);
       prevBtn.addEventListener("click", prevSlide);
-
       setInterval(nextSlide, 5000);
     }
 
