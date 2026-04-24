@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Produtos | CG Ritmo</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:#f7f7fb;
+margin:0;
+padding:40px 20px;
+color:#222;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+}
+
+.topo{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+flex-wrap:wrap;
+gap:15px;
+}
+
+h1{
+margin:0;
+font-size:28px;
+}
+
+select{
+padding:10px;
+border-radius:8px;
+border:1px solid #ddd;
+font-size:14px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:22px;
+}
+
+.card{
+background:#fff;
+border-radius:16px;
+padding:16px;
+box-shadow:0 8px 25px rgba(0,0,0,0.04);
+display:flex;
+flex-direction:column;
+transition:0.2s;
+border:1px solid #eee;
+}
+
+.card:hover{
+transform:translateY(-4px);
+box-shadow:0 14px 35px rgba(0,0,0,0.07);
+}
+
+.img-wrap{
+width:100%;
+height:220px;
+display:flex;
+align-items:center;
+justify-content:center;
+margin-bottom:14px;
+background:#fafafa;
+border-radius:12px;
+overflow:hidden;
+border:1px solid #eee;
+}
+
+.img-wrap img{
+max-width:100%;
+max-height:100%;
+object-fit:contain;
+}
+
+.nome{
+font-weight:600;
+margin-bottom:6px;
+min-height:40px;
+}
+
+.categoria{
+font-size:13px;
+color:#777;
+margin-bottom:8px;
+}
+
+.preco{
+font-size:18px;
+font-weight:700;
+margin-bottom:14px;
+}
+
+.btn{
+padding:12px;
+border-radius:8px;
+text-align:center;
+font-weight:600;
+cursor:pointer;
+border:none;
+text-decoration:none;
+background:#5b3df5;
+color:#fff;
+}
+
+.tag{
+display:inline-block;
+background:#eee;
+font-size:11px;
+padding:4px 7px;
+border-radius:6px;
+margin-bottom:6px;
+}
+
+.tag-destaque{
+background:#5b3df5;
+color:#fff;
+}
+
+.loading{
+text-align:center;
+margin-top:60px;
+color:#777;
+}
+
+.vazio{
+text-align:center;
+margin-top:60px;
+color:#777;
+}
+
+.erro{
+text-align:center;
+margin-top:60px;
+color:#c62828;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="topo">
+
+<h1>Produtos</h1>
+
+<select id="categoryFilter">
+
+<option value="todos">
+Todas categorias
+</option>
+
+<option value="Collants">
+Collants
+</option>
+
+<option value="Sapatilhas">
+Sapatilhas
+</option>
+
+<option value="Equipamentos">
+Equipamentos
+</option>
+
+<option value="Uniformes">
+Uniformes
+</option>
+
+<option value="Acessórios">
+Acessórios
+</option>
+
+<option value="Apresentação">
+Apresentação
+</option>
+
+<option value="Treino">
+Treino
+</option>
+
+<option value="Lembranças">
+Lembranças
+</option>
+
+</select>
+
+</div>
+
+<div id="grid" class="grid">
+
+<div class="loading">
+Carregando produtos...
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL =
+"https://rskocxqthlmwtfwtqati.supabase.co";
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJza29jeHF0aGxtd3Rmd3RxYXRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNTgxNzksImV4cCI6MjA5MTgzNDE3OX0.aAhivp2v5qkrOr7fWqEgzMxvnnug5n6OlsHZBiFNilY"
+const client =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+let produtosGlobais = [];
+
+function formatPrice(valor){
+
+return new Intl.NumberFormat(
+"pt-BR",
+{
+style:"currency",
+currency:"BRL"
+}
+
+).format(valor || 0);
+
+}
+
+function criarCard(prod){
+
+const destaque =
+prod.featured
+? `<div class="tag tag-destaque">destaque</div>`
+: "";
+
+return `
+
+<div class="card">
+
+<div class="img-wrap">
+
+<img src="${prod.image || ""}">
+
+</div>
+
+${destaque}
+
+<div class="nome">
+
+${prod.name || ""}
+
+</div>
+
+<div class="categoria">
+
+${prod.category || ""}
+
+</div>
+
+<div class="preco">
+
+${formatPrice(prod.price)}
+
+</div>
+
+<a
+class="btn"
+href="produto.html?id=${prod.id}"
+>
+
+Ver produto
+
+</a>
+
+</div>
+
+`;
+
+}
+
+function renderizar(produtos){
+
+const grid =
+document.getElementById("grid");
+
+if(!produtos.length){
+
+grid.innerHTML = `
+
+<div class="vazio">
+
+Nenhum produto cadastrado ainda
+
+</div>
+
+`;
+
+return;
+
+}
+
+grid.innerHTML =
+produtos
+.map(criarCard)
+.join("");
+
+}
+
+async function carregarProdutos(){
+
+try{
+
+const {data,error} =
+await client
+.from("products")
+.select("*")
+.order("created_at",{ascending:false});
+
+if(error){
+
+console.error(error);
+
+document.getElementById("grid").innerHTML =
+`<div class="erro">
+Erro Supabase:<br>${error.message}
+</div>`;
+
+return;
+
+}
+
+produtosGlobais = data;
+
+renderizar(produtosGlobais);
+
+}catch(err){
+
+console.error(err);
+
+document.getElementById("grid").innerHTML =
+`<div class="erro">
+Erro geral:<br>${err.message}
+</div>`;
+
+}
+
+}
+
+document
+.getElementById("categoryFilter")
+.addEventListener("change", e=>{
+
+const valor =
+e.target.value;
+
+if(valor==="todos"){
+
+renderizar(produtosGlobais);
+
+return;
+
+}
+
+const filtrados =
+produtosGlobais.filter(p=>
+
+p.category === valor
+
+);
+
+renderizar(filtrados);
+
+});
+
+carregarProdutos();
+
+</script>
+
+</body>
+</html>

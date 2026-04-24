@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin de Produtos - CG Ritmo</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:#f6f7fb;
+margin:0;
+padding:40px 20px;
+color:#222;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+}
+
+h1{
+margin-bottom:24px;
+}
+
+.card{
+background:#fff;
+border-radius:14px;
+box-shadow:0 10px 25px rgba(0,0,0,0.05);
+padding:24px;
+margin-bottom:24px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+}
+
+input, select, textarea{
+width:100%;
+box-sizing:border-box;
+padding:12px;
+border:1px solid #ddd;
+border-radius:8px;
+font-size:15px;
+}
+
+textarea{
+min-height:90px;
+resize:vertical;
+}
+
+button{
+background:#5b3df5;
+color:#fff;
+padding:12px 18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+opacity:0.92;
+}
+
+.button-light{
+background:#fff;
+color:#333;
+border:1px solid #ddd;
+}
+
+.button-danger{
+background:#fff5f5;
+color:#c62828;
+border:1px solid #f0bcbc;
+}
+
+.actions{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.product{
+display:flex;
+gap:14px;
+padding:14px 0;
+border-bottom:1px solid #eee;
+align-items:center;
+}
+
+.product img{
+width:80px;
+height:80px;
+object-fit:contain;
+border-radius:10px;
+background:#f0f0f0;
+border:1px solid #eee;
+}
+
+.product-info{
+flex:1;
+}
+
+.product-info strong{
+display:block;
+margin-bottom:4px;
+}
+
+.small{
+font-size:13px;
+color:#666;
+}
+
+.product-buttons{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.product-buttons button{
+padding:10px 12px;
+font-size:13px;
+}
+
+.status{
+margin-bottom:14px;
+font-size:14px;
+color:#666;
+}
+
+.preview-wrap{
+margin-top:14px;
+}
+
+.preview{
+width:180px;
+height:180px;
+border-radius:12px;
+background:#f0f0f0;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+border:1px solid #e6e6e6;
+margin-top:10px;
+}
+
+.preview img{
+width:100%;
+height:100%;
+object-fit:contain;
+background:#fff;
+}
+
+.upload-row{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-top:10px;
+align-items:center;
+}
+
+.note{
+margin-top:8px;
+font-size:12px;
+color:#777;
+}
+
+.success{
+color:#12854d;
+}
+
+.error{
+color:#c62828;
+}
+
+@media(max-width:800px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.product{
+flex-direction:column;
+align-items:flex-start;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Admin de Produtos</h1>
+
+<div class="card">
+
+<div class="status" id="status">
+Conectando ao Supabase...
+</div>
+
+<input type="hidden" id="productId">
+
+<div class="grid">
+
+<input id="name" placeholder="Nome do produto">
+
+<select id="category">
+<option value="Collants">Collants</option>
+<option value="Sapatilhas">Sapatilhas</option>
+<option value="Acessórios">Acessórios</option>
+<option value="Equipamentos">Equipamentos</option>
+<option value="Uniformes">Uniformes</option>
+<option value="Apresentação">Apresentação</option>
+<option value="Treino">Treino</option>
+<option value="Lembranças">Lembranças</option>
+</select>
+
+<input id="price" type="number" step="0.01" placeholder="Preço">
+
+<input id="stock" type="number" placeholder="Estoque">
+
+<select id="statusInput">
+<option value="ativo">Ativo</option>
+<option value="inativo">Inativo</option>
+</select>
+
+<select id="featured">
+<option value="false">Normal</option>
+<option value="true">Destaque</option>
+</select>
+
+</div>
+
+<div class="preview-wrap">
+
+<strong>Imagem do produto</strong>
+
+<div class="preview" id="preview">
+<span class="small">Sem imagem</span>
+</div>
+
+<div class="upload-row">
+
+<input type="file" id="imageFile" accept="image/*">
+
+<button type="button" onclick="uploadSelectedImage()">
+Enviar imagem
+</button>
+
+</div>
+
+<div class="note">
+Selecione imagem do computador e clique em enviar
+</div>
+
+</div>
+
+<div style="margin-top:14px;">
+
+<input id="image" placeholder="URL da imagem">
+
+</div>
+
+<div style="margin-top:14px;">
+
+<textarea id="description" placeholder="Descrição do produto"></textarea>
+
+</div>
+
+<div class="actions" style="margin-top:16px;">
+
+<button onclick="saveProduct()">
+Salvar produto
+</button>
+
+<button class="button-light" onclick="resetForm()">
+Limpar
+</button>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Produtos cadastrados</h2>
+
+<div id="list"></div>
+
+</div>
+
+</div>
+
+<script>
+const SUPABASE_URL = "https://rskocxqthlmwtfwtqati.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJza29jeHF0aGxtd3Rmd3RxYXRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNTgxNzksImV4cCI6MjA5MTgzNDE3OX0.aAhivp2v5qkrOr7fWqEgzMxvnnug5n6OlsHZBiFNilY";
+const BUCKET_NAME = "product-images";
+
+const statusEl = document.getElementById("status");
+const preview = document.getElementById("preview");
+const imageInput = document.getElementById("image");
+const imageFileInput = document.getElementById("imageFile");
+
+let client = null;
+
+function setStatus(message, isError = false) {
+  statusEl.innerHTML = isError
+    ? `<span style="color:#c62828">${message}</span>`
+    : `<span style="color:#12854d">${message}</span>`;
+}
+
+function formatPrice(v) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  }).format(v || 0);
+}
+
+function resetForm() {
+  document.getElementById("productId").value = "";
+  document.getElementById("name").value = "";
+  document.getElementById("category").value = "Collants";
+  document.getElementById("price").value = "";
+  document.getElementById("stock").value = "";
+  document.getElementById("statusInput").value = "ativo";
+  document.getElementById("featured").value = "false";
+  document.getElementById("image").value = "";
+  document.getElementById("description").value = "";
+  document.getElementById("imageFile").value = "";
+  preview.innerHTML = '<span class="small">Sem imagem</span>';
+}
+
+imageInput.addEventListener("input", () => {
+  const value = imageInput.value.trim();
+  if (!value) {
+    preview.innerHTML = '<span class="small">Sem imagem</span>';
+    return;
+  }
+  preview.innerHTML = `<img src="${value}" alt="preview">`;
+});
+
+imageFileInput.addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  preview.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="preview local">`;
+});
+
+async function testConnection() {
+  try {
+    if (!window.supabase) {
+      setStatus("Biblioteca do Supabase não carregou.", true);
+      return false;
+    }
+
+    client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    setStatus("Testando conexão...");
+
+    const { error } = await client
+      .from("products")
+      .select("id")
+      .limit(1);
+
+    if (error) {
+      console.error("Erro na tabela products:", error);
+      setStatus(`Erro na tabela products: ${error.message}`, true);
+      return false;
+    }
+
+    setStatus("Supabase conectado com sucesso.");
+    return true;
+  } catch (err) {
+    console.error("Erro geral:", err);
+    setStatus(`Erro geral: ${err.message}`, true);
+    return false;
+  }
+}
+
+async function uploadSelectedImage() {
+  try {
+    const file = imageFileInput.files?.[0];
+
+    if (!file) {
+      alert("Selecione uma imagem primeiro.");
+      return;
+    }
+
+    if (!client) {
+      alert("Supabase não conectado.");
+      return;
+    }
+
+    const extension = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
+
+    setStatus("Enviando imagem...");
+
+    const { error: uploadError } = await client.storage
+      .from(BUCKET_NAME)
+      .upload(fileName, file, {
+        cacheControl: "3600",
+        upsert: true
+      });
+
+    if (uploadError) {
+      console.error("Erro upload:", uploadError);
+      setStatus(`Erro no upload: ${uploadError.message}`, true);
+      alert("Erro no upload: " + uploadError.message);
+      return;
+    }
+
+    const { data } = client.storage
+      .from(BUCKET_NAME)
+      .getPublicUrl(fileName);
+
+    imageInput.value = data.publicUrl;
+    preview.innerHTML = `<img src="${data.publicUrl}" alt="preview final">`;
+    setStatus("Imagem enviada com sucesso.");
+  } catch (err) {
+    console.error("Erro geral upload:", err);
+    setStatus(`Erro geral no upload: ${err.message}`, true);
+  }
+}
+
+async function loadProducts() {
+  try {
+    const { data, error } = await client
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    const list = document.getElementById("list");
+
+    if (error) {
+      console.error(error);
+      list.innerHTML = `<p>Erro ao carregar produtos: ${error.message}</p>`;
+      return;
+    }
+
+    if (!data || !data.length) {
+      list.innerHTML = '<p class="small">Nenhum produto cadastrado ainda.</p>';
+      return;
+    }
+
+    list.innerHTML = "";
+
+    data.forEach(p => {
+      list.innerHTML += `
+        <div class="product">
+          <img src="${p.image || ""}" alt="${p.name || "produto"}">
+          <div class="product-info">
+            <strong>${p.name || ""}</strong>
+            <div class="small">${p.category || ""}</div>
+            <div class="small">${formatPrice(p.price)}</div>
+            <div class="small">Estoque: ${p.stock ?? 0}</div>
+            <div class="small">Status: ${p.status || "ativo"} ${p.featured ? "• Destaque" : ""}</div>
+          </div>
+          <div class="product-buttons">
+            <button onclick="editProduct('${p.id}')">Editar</button>
+            <button class="button-danger" onclick="deleteProduct('${p.id}')">Excluir</button>
+          </div>
+        </div>
+      `;
+    });
+  } catch (err) {
+    console.error("Erro geral loadProducts:", err);
+    document.getElementById("list").innerHTML = `<p>Erro geral: ${err.message}</p>`;
+  }
+}
+
+async function saveProduct() {
+  try {
+    const id = document.getElementById("productId").value;
+
+    const data = {
+      name: document.getElementById("name").value.trim(),
+      category: document.getElementById("category").value,
+      price: Number(document.getElementById("price").value || 0),
+      stock: Number(document.getElementById("stock").value || 0),
+      status: document.getElementById("statusInput").value,
+      featured: document.getElementById("featured").value === "true",
+      image: document.getElementById("image").value.trim(),
+      description: document.getElementById("description").value.trim()
+    };
+
+    if (!data.name) {
+      alert("Preencha o nome do produto.");
+      return;
+    }
+
+    let response;
+
+    if (id) {
+      response = await client.from("products").update(data).eq("id", id);
+    } else {
+      response = await client.from("products").insert([data]);
+    }
+
+    if (response.error) {
+      console.error(response.error);
+      alert("Erro ao salvar: " + response.error.message);
+      return;
+    }
+
+    alert(id ? "Produto atualizado." : "Produto cadastrado.");
+    resetForm();
+    loadProducts();
+  } catch (err) {
+    console.error("Erro geral saveProduct:", err);
+    alert("Erro geral: " + err.message);
+  }
+}
+
+async function editProduct(id) {
+  try {
+    const { data, error } = await client
+      .from("products")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      alert("Erro ao editar: " + error.message);
+      return;
+    }
+
+    document.getElementById("productId").value = data.id;
+    document.getElementById("name").value = data.name || "";
+    document.getElementById("category").value = data.category || "Collants";
+    document.getElementById("price").value = data.price || "";
+    document.getElementById("stock").value = data.stock || 0;
+    document.getElementById("statusInput").value = data.status || "ativo";
+    document.getElementById("featured").value = String(!!data.featured);
+    document.getElementById("image").value = data.image || "";
+    document.getElementById("description").value = data.description || "";
+
+    preview.innerHTML = data.image
+      ? `<img src="${data.image}" alt="preview">`
+      : '<span class="small">Sem imagem</span>';
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (err) {
+    alert("Erro geral ao editar: " + err.message);
+  }
+}
+
+async function deleteProduct(id) {
+  try {
+    if (!confirm("Excluir produto?")) return;
+
+    const { error } = await client
+      .from("products")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      alert("Erro ao excluir: " + error.message);
+      return;
+    }
+
+    loadProducts();
+  } catch (err) {
+    alert("Erro geral ao excluir: " + err.message);
+  }
+}
+
+async function init() {
+  const ok = await testConnection();
+  if (ok) {
+    await loadProducts();
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>

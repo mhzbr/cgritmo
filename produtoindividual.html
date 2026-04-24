@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Produto | CG Ritmo</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background:#f7f7fb;
+      margin:0;
+      padding:40px 20px;
+      color:#222;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:auto;
+    }
+
+    .back-link{
+      display:inline-block;
+      margin-bottom:25px;
+      text-decoration:none;
+      color:#5b3df5;
+      font-weight:600;
+    }
+
+    .card{
+      background:#fff;
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.05);
+      border:1px solid #eee;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:30px;
+      align-items:start;
+    }
+
+    .img-wrap{
+      width:100%;
+      min-height:420px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#fafafa;
+      border-radius:14px;
+      border:1px solid #eee;
+      overflow:hidden;
+      padding:20px;
+    }
+
+    .img-wrap img{
+      max-width:100%;
+      max-height:500px;
+      object-fit:contain;
+    }
+
+    .info{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .tag{
+      display:inline-block;
+      background:#eee;
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      width:max-content;
+    }
+
+    .tag-destaque{
+      background:#5b3df5;
+      color:#fff;
+    }
+
+    .categoria{
+      font-size:14px;
+      color:#777;
+    }
+
+    h1{
+      margin:0;
+      font-size:32px;
+      line-height:1.2;
+    }
+
+    .preco{
+      font-size:30px;
+      font-weight:700;
+      color:#5b3df5;
+    }
+
+    .descricao{
+      font-size:15px;
+      line-height:1.7;
+      color:#555;
+      white-space:pre-line;
+    }
+
+    .estoque{
+      font-size:14px;
+      color:#666;
+    }
+
+    .botoes{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    .btn{
+      padding:14px 20px;
+      border-radius:10px;
+      font-weight:700;
+      text-decoration:none;
+      display:inline-block;
+      text-align:center;
+    }
+
+    .btn-comprar{
+      background:#5b3df5;
+      color:#fff;
+    }
+
+    .btn-whats{
+      background:#e9f9ef;
+      color:#12854d;
+      border:1px solid #ccefd9;
+    }
+
+    .loading,
+    .erro{
+      text-align:center;
+      padding:60px 20px;
+      color:#777;
+    }
+
+    .erro{
+      color:#c62828;
+    }
+
+    @media(max-width:900px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .img-wrap{
+        min-height:300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <a class="back-link" href="produtos.html">← voltar para produtos</a>
+
+    <div id="produtoContainer" class="loading">
+      Carregando produto...
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://rskocxqthlmwtfwtqati.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJza29jeHF0aGxtd3Rmd3RxYXRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNTgxNzksImV4cCI6MjA5MTgzNDE3OX0.aAhivp2v5qkrOr7fWqEgzMxvnnug5n6OlsHZBiFNilY";
+
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const params = new URLSearchParams(window.location.search);
+    const productId = params.get("id");
+
+    function formatPrice(value){
+      return new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      }).format(value || 0);
+    }
+
+    async function carregarProduto(){
+      const container = document.getElementById("produtoContainer");
+
+      if(!productId){
+        container.className = "erro";
+        container.innerHTML = "Produto não encontrado.";
+        return;
+      }
+
+      try{
+        const { data, error } = await client
+          .from("products")
+          .select("*")
+          .eq("id", productId)
+          .single();
+
+        if(error || !data){
+          console.error(error);
+          container.className = "erro";
+          container.innerHTML = "Erro ao carregar produto.";
+          return;
+        }
+
+        document.title = `${data.name} | CG Ritmo`;
+
+        const destaque = data.featured
+          ? `<div class="tag tag-destaque">Destaque</div>`
+          : "";
+
+        const mensagem = encodeURIComponent(
+`Olá, tenho interesse neste produto:
+
+${data.name}
+
+Pode me enviar mais informações?`
+        );
+
+        container.className = "";
+        container.innerHTML = `
+          <div class="card">
+            <div class="grid">
+              <div class="img-wrap">
+                ${
+                  data.image
+                  ? `<img src="${data.image}" alt="${data.name}">`
+                  : `<div>Sem imagem</div>`
+                }
+              </div>
+
+              <div class="info">
+                ${destaque}
+
+                <div class="categoria">
+                  ${data.category || ""}
+                </div>
+
+                <h1>
+                  ${data.name || ""}
+                </h1>
+
+                <div class="preco">
+                  ${formatPrice(data.price)}
+                </div>
+
+                <div class="descricao">
+                  ${data.description || "Produto sem descrição cadastrada."}
+                </div>
+
+                <div class="estoque">
+                  Estoque disponível: ${data.stock ?? 0}
+                </div>
+
+                <div class="botoes">
+                  <a
+                    class="btn btn-comprar"
+                    href="https://wa.me/5544999999999?text=${mensagem}"
+                    target="_blank"
+                  >
+                    Comprar agora
+                  </a>
+
+                  <a
+                    class="btn btn-whats"
+                    href="https://wa.me/5544999999999?text=${mensagem}"
+                    target="_blank"
+                  >
+                    Falar no WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }catch(err){
+        console.error(err);
+        container.className = "erro";
+        container.innerHTML = "Erro geral ao carregar produto.";
+      }
+    }
+
+    carregarProduto();
+  </script>
+
+</body>
+</html>
